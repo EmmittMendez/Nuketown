@@ -61,8 +61,8 @@ class Persona:
     def colisionDetection(parejas):
         for persona1, persona2 in parejas:
             # Nuestros cubos son de tamaño 5, por lo que nuestros radios serian de 2.5
-            radio_persona1 = 5  
-            radio_persona2 = 5 
+            radio_persona1 = 1  
+            radio_persona2 = 1
 
             # Calcular la posición futura de los cubos
             posicion_futura_persona1 = [persona1.Position[0] + persona1.Direction[0], persona1.Position[2] + persona1.Direction[2]]
@@ -88,6 +88,7 @@ class Persona:
         glPushMatrix()
         glTranslatef(self.Position[0], self.Position[1], self.Position[2])
         glRotate(-90, 1, 0, 0)
+        glScale(3.5,3.5,3.5)
         #glScale(0.8,0.8,0.8)
         #glScale(3,3,3)
         self.obj.render()

@@ -31,15 +31,16 @@ screen_height = 600
 FOVY=60.0
 ZNEAR=0.01
 ZFAR=900.0
+# ZFAR=1000.0
 #Variables para definir la posicion del observador
 #gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z)
 
-EYE_X = 1.0   #300.0
-EYE_Y = 7.0   #200.0
-EYE_Z = 0.0   #300.0
-CENTER_X = 0.0    #0
-CENTER_Y = 7.0    #0
-CENTER_Z = 0.0    #0
+# EYE_X = 1.0   #300.0
+# EYE_Y = 7.0   #200.0
+# EYE_Z = 0.0   #300.0
+# CENTER_X = 0.0    #0
+# CENTER_Y = 7.0    #0
+# CENTER_Z = 0.0    #0
 
 #pruebas
 #EYE_X = 300.0
@@ -58,20 +59,20 @@ CENTER_Z = 0.0    #0
 # CENTER_Z = 0
 
 #pruebas dentro del cubo
-# EYE_X = 200.0
+# EYE_X = 300.0
 # EYE_Y = 90.0
-# EYE_Z = 200.0
+# EYE_Z = 300.0
 # CENTER_X = 0
 # CENTER_Y = 0
 # CENTER_Z = 0
 
 #pruebas dentro del cubo casa amarilla
-# EYE_X = 1.0
-# EYE_Y = 50.0
-# EYE_Z = 0.0
-# CENTER_X = 0
-# CENTER_Y = 50
-# CENTER_Z = 0
+EYE_X = 1.0
+EYE_Y = 50.0
+EYE_Z = 0.0
+CENTER_X = 0
+CENTER_Y = 50
+CENTER_Z = 0
 
 #pruebas centro del mapa
 '''
@@ -94,7 +95,7 @@ Y_MAX=500
 Z_MIN=-500
 Z_MAX=500
 #Dimension del plano
-DimBoard = 300
+DimBoard = 400
 
 #Variables para el control de las personas
 personas = []
@@ -140,7 +141,7 @@ def Axis():
 
 def Init():
     #global obj
-    global casa, casa2, bus, suelo, suelo2, letrero, vallaC, vallaL1, vallaL2, vallaL3, vallaM1, vallaM2
+    global casa, casa2, bus, carro, suelo, suelo2, letrero, vallaC, vallaL1, vallaL2, vallaL3, vallaM1, vallaM2
     screen = pygame.display.set_mode(
         (screen_width, screen_height), DOUBLEBUF | OPENGL)
     pygame.display.set_caption("OpenGL: Mapa Nuketown")
@@ -177,8 +178,8 @@ def Init():
     suelo2 = Suelo("Proyecto FInal\Texturas\Suelo.obj")
     suelo2.generate()
     # Texturas para las vallas
-    vallaC = Valla("Proyecto FInal\Texturas\VallaChica1.obj")
-    vallaC.generate()
+    # vallaC = Valla("Proyecto FInal\Texturas\VallaChica1.obj")
+    # vallaC.generate()
     # vallaL1 = Valla("Proyecto FInal\Texturas\VallaLarga1.obj")
     # vallaL1.generate()
     # vallaL2 = Valla("Proyecto FInal\Texturas\VallaLarga2.obj")
@@ -189,8 +190,9 @@ def Init():
     # vallaM1.generate()
     # vallaM2 = Valla("Proyecto FInal\Texturas\VallaMediana2.obj")
     # vallaM2.generate()
+    
     # Arreglo de la direccion de las texturas de las personas
-    obj_files = ["Proyecto FInal\Texturas\Chevrolet_Camaro_SS_Low.obj"]
+    obj_files = ["Proyecto FInal\Texturas\HelloK.obj"]
     # Casa verde y amarilla
     casa = Casa("Proyecto FInal\Texturas\CasaVerde.obj")
     casa.generate()
@@ -199,6 +201,7 @@ def Init():
     # Creamos el bus
     bus = Vehiculo("Proyecto FInal\Texturas\BusAmarillo.obj")
     bus.generate()
+    carro = Vehiculo("Proyecto FInal\Texturas\Chevrolet_Camaro_SS_Low.obj")
     # Creamos el letrero
     letrero = Letrero("Proyecto FInal\Texturas\Letrero.obj")
     letrero.generate()
@@ -206,7 +209,7 @@ def Init():
     # Asigamos las texturas a cada persona
     for i in range(npersonas):
         obj_file = obj_files[i % len(obj_files)]
-        persona = Persona(50, 1.0, obj_file)
+        persona = Persona(20, 1.0, obj_file)
         personas.append(persona)
         
 
@@ -228,7 +231,7 @@ def drawFondo():
     
     #dibujamos el cubo
     glPushMatrix()
-    glScalef(300.0, 50.0, 300.0)  
+    glScalef(400.0, 50.0, 400.0)  
     
     # Trasladar el cubo
     glTranslatef(0.0, 0.9, 0.0)
@@ -279,6 +282,7 @@ def display():
     suelo2.draw()
     glPopMatrix()
     
+    
     #se dibujan la casa verde
     glPushMatrix()
     #glScalef(3.5, 3.5, 3.5)
@@ -304,23 +308,64 @@ def display():
     #obj.render()
     glPopMatrix()
     
+    # #se dibujan la casa verde2
+    # glPushMatrix()
+    # #glScalef(3.5, 3.5, 3.5)
+    # #glTranslate(30, 0, 10)
+    # glScale(7,7,7)
+    # glTranslate(0, 0, 30)
+    # glRotate(-90, 0, 1, 0)
+    # glRotate(-90, 1, 0, 0 )
+    # glRotate(-90, 0, 0, 1)
+    # casa.draw()
+    # #obj.render()
+    # glPopMatrix()
+    
+    
     #Dibuja las personas
     glPushMatrix()
     #glScale(0.8,0.8,0.8)
     #glTranslate(120.0, 0.0, 0.0)
     glTranslate(0.0, -3.5, 0.0)
+    glTranslate(-4, 0, 0)
     #glRotate(-90, 1, 0, 0)
     for obj in personas:
         obj.draw()
         obj.update()
     glPopMatrix()
-    
+   
     #Se dibuja el bus
     glPushMatrix()
-    glScale(2,2,2)
-    glTranslate(5, 1.4, 0)
+    glScale(5,5,5)
+    glTranslate(4, 1.4, -5)
     glRotate(-90, 1, 0, 0)
     bus.draw()
+    glPopMatrix()
+    
+    #Se dibuja el bus2
+    glPushMatrix()
+    glScale(5,5,5)
+    glTranslate(-8, 1.4, 2)
+    glRotate(-90, 1, 0, 0)
+    bus.draw()
+    glPopMatrix()
+    
+    #se dibuja el carro
+    glPushMatrix()
+    glScale(3,3,3)
+    glTranslate(3, 1.4,-30)
+    glRotate(90, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    carro.draw()
+    glPopMatrix()
+    
+    #se dibuja el carro casa verde
+    glPushMatrix()
+    glScale(3,3,3)
+    glTranslate(27, 1.4, 26)
+    glRotate(70, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    carro.draw()
     glPopMatrix()
     
     #Se dibuja el letrero
@@ -333,12 +378,34 @@ def display():
     glPopMatrix()
     
     #Se dibujan las vallas
-    glPushMatrix()
-    glScale(5,5,5)
-    glTranslate(20, 0, -5)
-    glRotate(-90, 1, 0, 0)
-    vallaC.draw()
-    glPopMatrix()
+    # glPushMatrix()
+    # glScale(14,14,14)
+    # #glTranslate(12, 0, -5.5)
+    # glTranslate(6.5, 0, -4.8)
+    # glRotate(-21, 0, 1, 0)
+    # glRotate(-90, 1, 0, 0)
+    # vallaC.draw()
+    # glPopMatrix()
+    
+    # glPushMatrix()
+    # glScale(7, 14, 7)
+    # #glTranslate(12, 0, -5.5)
+    # glTranslate(15.8, 0, -10)
+    # glRotate(65, 0, 1, 0)
+    # glRotate(-90, 1, 0, 0)
+    # vallaC.draw()
+    # glPopMatrix()
+    
+    # #valla larga
+    # glPushMatrix()
+    # glScale(14, 14, 14)
+    # #glTranslate(12, 0, -5.5)
+    # glTranslate(13.8, 0.5, -4.6)
+    # glRotate(-18, 0, 1, 0)
+    # glRotate(-90, 1, 0, 0)
+    # vallaM1.draw()
+    # glPopMatrix()
+    
     
     pygame.display.flip()
     #pygame.time.wait(100)
