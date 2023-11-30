@@ -35,13 +35,12 @@ ZFAR=900.0
 #Variables para definir la posicion del observador
 #gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z)
 
-# EYE_X = 1.0   #300.0
-# EYE_Y = 7.0   #200.0
-# EYE_Z = 0.0   #300.0
-# CENTER_X = 0.0    #0
-# CENTER_Y = 7.0    #0
-# CENTER_Z = 0.0    #0
-
+EYE_X = 1.0   #300.0
+EYE_Y = 7.0   #200.0
+EYE_Z = 0.0   #300.0
+CENTER_X = 0.0    #0
+CENTER_Y = 7.0    #0
+CENTER_Z = 0.0    #0
 #pruebas
 #EYE_X = 300.0
 #EYE_Y = 200.0
@@ -64,8 +63,8 @@ ZFAR=900.0
 # EYE_Z = 300.0
 # CENTER_X = 0
 # CENTER_Y = 0
-# CENTER_Z = 0
-
+# CENTER_Z = 0c:\Users\edgar\Desktop\Otoño 2023\Graficación\Archivos obj\Texturas Nuketown\Objetos Corregidos\Mas texturas\MapaNuketown2.py
+'''
 #pruebas dentro del cubo casa amarilla
 EYE_X = 1.0
 EYE_Y = 50.0
@@ -73,7 +72,7 @@ EYE_Z = 0.0
 CENTER_X = 0
 CENTER_Y = 50
 CENTER_Z = 0
-
+'''
 #pruebas centro del mapa
 '''
 EYE_X = 100.0
@@ -142,10 +141,15 @@ def Axis():
 def Init():
     #global obj
     global casa, casa2, bus, carro, suelo, suelo2, letrero, vallaC, vallaL1, vallaL2, vallaL3, vallaM1, vallaM2
-    screen = pygame.display.set_mode(
-        (screen_width, screen_height), DOUBLEBUF | OPENGL)
+    #screen = pygame.display.set_mode(
+        #(screen_width, screen_height), DOUBLEBUF | OPENGL)
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.OPENGL)
     pygame.display.set_caption("OpenGL: Mapa Nuketown")
 
+    screen_info = pygame.display.Info()
+    screen_width = screen_info.current_w
+    screen_height = screen_info.current_h
+    
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(FOVY, screen_width/screen_height, ZNEAR, ZFAR)
@@ -192,7 +196,7 @@ def Init():
     # vallaM2.generate()
     
     # Arreglo de la direccion de las texturas de las personas
-    obj_files = ["Proyecto FInal\Texturas\HelloK.obj"]
+    #obj_files = ["Proyecto FInal\Texturas\HelloK.obj"]
     # Casa verde y amarilla
     casa = Casa("Proyecto FInal\Texturas\CasaVerde.obj")
     casa.generate()
@@ -207,10 +211,10 @@ def Init():
     letrero.generate()
     
     # Asigamos las texturas a cada persona
-    for i in range(npersonas):
-        obj_file = obj_files[i % len(obj_files)]
-        persona = Persona(20, 1.0, obj_file)
-        personas.append(persona)
+    # for i in range(npersonas):
+    #     obj_file = obj_files[i % len(obj_files)]
+    #     persona = Persona(20, 1.0, obj_file)
+    #     personas.append(persona)
         
 
 #dibujamos el fondo  
@@ -412,49 +416,100 @@ def display():
     
 done = False
 Init()
+
+# Mouse CAM
+last_mouse_pos = pygame.mouse.get_pos()
+sensitivity = 0.1
+phi = 0  # Define phi con un valor inicial
+
+center_x = screen_width // 2
+center_y = screen_height // 2
+pygame.mouse.set_pos((center_x, center_y))
+
+mouse_intentional = False
+
+pygame.mouse.set_visible(False)
+
 while not done:
     for event in pygame.event.get():
+        if event.type == pygame.MOUSEMOTION:
+            # Obtener la posición actual del mouse
+            current_pos = pygame.mouse.get_pos()
+
+            # Si el mouse se ha movido desde el centro de la ventana intencionalmente
+            if current_pos != (center_x, center_y):
+                mouse_intentional = True
+                delta_x = current_pos[0] - center_x
+                delta_y = current_pos[1] - center_y
+
+                theta += delta_x * sensitivity
+                phi -= delta_y * sensitivity
+
+                phi = max(min(phi, 89), -89)
+                theta %= 360
+                pygame.mouse.set_pos((center_x, center_y))
+            else:
+                mouse_intentional = False  # El movimiento del mouse fue debido a centrado, no intencional
+
+        if not mouse_intentional:
+            dir[0] = math.cos(math.radians(theta)) * math.cos(math.radians(phi))
+            dir[1] = math.sin(math.radians(phi))
+            dir[2] = math.sin(math.radians(theta)) * math.cos(math.radians(phi))
+
+            CENTER_X = EYE_X + dir[0]
+            CENTER_Y = EYE_Y + dir[1]
+            CENTER_Z = EYE_Z + dir[2]
+
+            glLoadIdentity()
+            gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
+
         if event.type == pygame.QUIT:
             done = True
-        if event.type == pygame.KEYDOWN:
+        
+        keys = pygame.key.get_pressed()
+        #if event.type == pygame.KEYDOWN:
             #se controla el movimiento para adelante
-            if event.key == pygame.K_UP:
-                EYE_X = EYE_X + dir[0]
-                EYE_Z = EYE_Z + dir[2]
-                CENTER_X = CENTER_X + dir[0]
-                CENTER_Z = CENTER_Z + dir[2]
-                glLoadIdentity()
-                gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
-            #se controla el movimiento para atras
-            if event.key == pygame.K_DOWN:
-                EYE_X = EYE_X - dir[0]
-                EYE_Z = EYE_Z - dir[2]
-                CENTER_X = CENTER_X + dir[0]
-                CENTER_Z = CENTER_Z + dir[2]
-                glLoadIdentity()
-                gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
-            #se controla el movimieto de camara a la derecha
-            if event.key == pygame.K_RIGHT:
-                dir[0] = (math.cos(math.radians(-theta)) * dir[0]) + (math.sin(math.radians(-theta)) * dir[2])
-                dir[2] = -(math.sin(math.radians(-theta)) * dir[0]) + (math.cos(math.radians(-theta)) * dir[2])
-                #EYE_X = EYE_X + dir[0]
-                #EYE_Z = EYE_Z + dir[2]
-                CENTER_X = EYE_X + dir[0]
-                CENTER_Z = EYE_Z + dir[2]
-                glLoadIdentity()
-                gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
-            #se controla el movimieto de camara a la izquierda
-            if event.key == pygame.K_LEFT:
-                dir[0] = (math.cos(math.radians(theta)) * dir[0]) + (math.sin(math.radians(theta)) * dir[2])
-                dir[2] = -(math.sin(math.radians(theta)) * dir[0]) + (math.cos(math.radians(theta)) * dir[2])
-                #EYE_X = EYE_X - dir[0]
-                #EYE_Z = EYE_Z - dir[2]
-                CENTER_X = EYE_X + dir[0]
-                CENTER_Z = EYE_Z + dir[2]
-                glLoadIdentity()
-                gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
-            if event.key == pygame.K_ESCAPE:
-                done = True
+        if keys[K_UP] or keys[K_w]:
+            EYE_X = EYE_X + dir[0]
+            EYE_Z = EYE_Z + dir[2]
+            CENTER_X = CENTER_X + dir[0]
+            CENTER_Z = CENTER_Z + dir[2]
+            glLoadIdentity()
+            gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
+        #se controla el movimiento para atras
+        if keys[K_DOWN] or keys[K_s]:
+            EYE_X = EYE_X - dir[0]
+            EYE_Z = EYE_Z - dir[2]
+            CENTER_X = CENTER_X + dir[0]
+            CENTER_Z = CENTER_Z + dir[2]
+            glLoadIdentity()
+            gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
+        #se controla el movimieto de camara a la derecha
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            dir[0] = (math.cos(math.radians(-theta)) * dir[0]) + (math.sin(math.radians(-theta)) * dir[2])
+            dir[2] = -(math.sin(math.radians(-theta)) * dir[0]) + (math.cos(math.radians(-theta)) * dir[2])
+            #EYE_X = EYE_X + dir[0]
+            #EYE_Z = EYE_Z + dir[2]
+            CENTER_X = EYE_X + dir[0]
+            CENTER_Z = EYE_Z + dir[2]
+            glLoadIdentity()
+            gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
+        #se controla el movimieto de camara a la izquierda
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            dir[0] = (math.cos(math.radians(theta)) * dir[0]) + (math.sin(math.radians(theta)) * dir[2])
+            dir[2] = -(math.sin(math.radians(theta)) * dir[0]) + (math.cos(math.radians(theta)) * dir[2])
+            #EYE_X = EYE_X - dir[0]
+            #EYE_Z = EYE_Z - dir[2]
+            CENTER_X = EYE_X + dir[0]
+            CENTER_Z = EYE_Z + dir[2]
+            glLoadIdentity()
+            gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
+        if keys[K_ESCAPE]:
+            done = True
+        # if event.key == pygame.K_ESCAPE:
+        #    done = True
+            # glLoadIdentity()
+            # gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
     # Generar las parejas de obj
     parejas_persona = Persona.parejasPersonas(personas)
 
