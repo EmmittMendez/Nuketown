@@ -182,21 +182,21 @@ def Init():
     suelo2 = Suelo("Proyecto FInal\Texturas\Suelo.obj")
     suelo2.generate()
     # Texturas para las vallas
-    # vallaC = Valla("Proyecto FInal\Texturas\VallaChica1.obj")
-    # vallaC.generate()
-    # vallaL1 = Valla("Proyecto FInal\Texturas\VallaLarga1.obj")
-    # vallaL1.generate()
-    # vallaL2 = Valla("Proyecto FInal\Texturas\VallaLarga2.obj")
-    # vallaL2.generate()
-    # vallaL3 = Valla("Proyecto FInal\Texturas\VallaLarga3.obj")
-    # vallaL3.generate()
-    # vallaM1 = Valla("Proyecto FInal\Texturas\VallaMediana1.obj")
-    # vallaM1.generate()
-    # vallaM2 = Valla("Proyecto FInal\Texturas\VallaMediana2.obj")
-    # vallaM2.generate()
+    vallaC = Valla("Proyecto FInal\Texturas\VallaChica1.obj")
+    vallaC.generate()
+    vallaL1 = Valla("Proyecto FInal\Texturas\VallaLarga1.obj")
+    vallaL1.generate()
+    vallaL2 = Valla("Proyecto FInal\Texturas\VallaLarga2.obj")
+    vallaL2.generate()
+    vallaL3 = Valla("Proyecto FInal\Texturas\VallaLarga3.obj")
+    vallaL3.generate()
+    vallaM1 = Valla("Proyecto FInal\Texturas\VallaMediana1.obj")
+    vallaM1.generate()
+    vallaM2 = Valla("Proyecto FInal\Texturas\VallaMediana2.obj")
+    vallaM2.generate()
     
     # Arreglo de la direccion de las texturas de las personas
-    #obj_files = ["Proyecto FInal\Texturas\HelloK.obj"]
+    obj_files = ["Proyecto FInal\Texturas\HelloK.obj"]
     # Casa verde y amarilla
     casa = Casa("Proyecto FInal\Texturas\CasaVerde.obj")
     casa.generate()
@@ -211,10 +211,10 @@ def Init():
     letrero.generate()
     
     # Asigamos las texturas a cada persona
-    # for i in range(npersonas):
-    #     obj_file = obj_files[i % len(obj_files)]
-    #     persona = Persona(20, 1.0, obj_file)
-    #     personas.append(persona)
+    for i in range(npersonas):
+        obj_file = obj_files[i % len(obj_files)]
+        persona = Persona(20, 1.0, obj_file)
+        personas.append(persona)
         
 
 #dibujamos el fondo  
@@ -382,33 +382,33 @@ def display():
     glPopMatrix()
     
     #Se dibujan las vallas
-    # glPushMatrix()
-    # glScale(14,14,14)
-    # #glTranslate(12, 0, -5.5)
-    # glTranslate(6.5, 0, -4.8)
-    # glRotate(-21, 0, 1, 0)
-    # glRotate(-90, 1, 0, 0)
-    # vallaC.draw()
-    # glPopMatrix()
+    glPushMatrix()
+    glScale(14,14,14)
+    #glTranslate(12, 0, -5.5)
+    glTranslate(6.5, 0, -4.8)
+    glRotate(-21, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    vallaC.draw()
+    glPopMatrix()
     
-    # glPushMatrix()
-    # glScale(7, 14, 7)
-    # #glTranslate(12, 0, -5.5)
-    # glTranslate(15.8, 0, -10)
-    # glRotate(65, 0, 1, 0)
-    # glRotate(-90, 1, 0, 0)
-    # vallaC.draw()
-    # glPopMatrix()
+    glPushMatrix()
+    glScale(7, 14, 7)
+    #glTranslate(12, 0, -5.5)
+    glTranslate(15.8, 0, -10)
+    glRotate(65, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    vallaC.draw()
+    glPopMatrix()
     
-    # #valla larga
-    # glPushMatrix()
-    # glScale(14, 14, 14)
-    # #glTranslate(12, 0, -5.5)
-    # glTranslate(13.8, 0.5, -4.6)
-    # glRotate(-18, 0, 1, 0)
-    # glRotate(-90, 1, 0, 0)
-    # vallaM1.draw()
-    # glPopMatrix()
+    #valla larga
+    glPushMatrix()
+    glScale(14, 14, 14)
+    #glTranslate(12, 0, -5.5)
+    glTranslate(13.8, 0.5, -4.6)
+    glRotate(-18, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    vallaM1.draw()
+    glPopMatrix()
     
     
     pygame.display.flip()
