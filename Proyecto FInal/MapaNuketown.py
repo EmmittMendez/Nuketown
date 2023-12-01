@@ -24,6 +24,8 @@ from Vehiculo import Vehiculo
 from Suelo import Suelo
 from Letrero import Letrero 
 from Valla import Valla
+from Decoracion import Decoracion
+from Lampara import Lampara
 
 screen_width = 900
 screen_height = 600
@@ -41,6 +43,13 @@ EYE_Z = 0.0   #300.0
 CENTER_X = 0.0    #0
 CENTER_Y = 7.0    #0
 CENTER_Z = 0.0    #0
+#pruebas dentro casa verde
+# EYE_X = 120.0   #300.0
+# EYE_Y = 7.0   #200.0
+# EYE_Z = 20.0   #300.0
+# CENTER_X = 0.0    #0
+# CENTER_Y = 7.0    #0
+# CENTER_Z = 0.0    #0
 #pruebas
 #EYE_X = 300.0
 #EYE_Y = 200.0
@@ -100,16 +109,14 @@ DimBoard = 400
 personas = []
 npersonas = 10
 
+#Variables asociados las decoraciones de la casa
+decoraciones = []
+ndecoraciones = 13
 
 #Variables para el control del observador
 theta = 1.0
 radius = 300
 dir = [1.0, 0.0, 0.0]
-
-#Variables asociados a los objetos de la clase Cubo
-#cubo = Cubo(DimBoard, 1.0)
-cubos = []
-ncubos = 20
 
 
 pygame.init()
@@ -141,6 +148,8 @@ def Axis():
 def Init():
     #global obj
     global casa, casa2, bus, carro, suelo, suelo2, letrero, vallaC, vallaL1, vallaL2, vallaL3, vallaM1, vallaM2
+    global alfombra, amongus, cama, closet, cocinaLavabo, foco, mesaySillas, muebleIndividual, muebleMediano
+    global lampara, muebleMedianoParaTele, muebleParaTele, sillonGrande, sillonIndividual
     #screen = pygame.display.set_mode(
         #(screen_width, screen_height), DOUBLEBUF | OPENGL)
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.OPENGL)
@@ -172,9 +181,6 @@ def Init():
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)           # most obj files expect to be smooth-shaded
     
-    #obj_files = ["Archivos obj\obj\Chevrolet_Camaro_SS_Low.obj", "Archivos obj\obj\CasaVerde.obj", "Archivos obj\obj\CasaAmarilla.obj"]
-    #obj = OBJ("Archivos obj/obj/CasaAmarilla.obj", swapyz=True)
-    #obj.generate()
     
     # Texturas para el suelo
     suelo = Suelo("Proyecto FInal\Texturas\BaseSuelo.obj")
@@ -196,7 +202,7 @@ def Init():
     vallaM2.generate()
     
     # Arreglo de la direccion de las texturas de las personas
-    obj_files = ["Proyecto FInal\Texturas\HelloK.obj"]
+    obj_files = ["Proyecto FInal\Texturas\persona.obj"]
     # Casa verde y amarilla
     casa = Casa("Proyecto FInal\Texturas\CasaVerde.obj")
     casa.generate()
@@ -210,7 +216,37 @@ def Init():
     letrero = Letrero("Proyecto FInal\Texturas\Letrero.obj")
     letrero.generate()
     
-    # Asigamos las texturas a cada persona
+    #asignamos las texturas a los faros
+    lampara = Lampara("Proyecto FInal\Texturas\Faros.obj")
+    lampara.generate()
+    #asignamos las texturas a cada objeto dentro de la casa
+    alfombra = Decoracion("Proyecto FInal\Texturas\Alfombra.obj")
+    alfombra.generate()
+    amongus = Decoracion("Proyecto FInal\Texturas\Amongus.obj")
+    amongus.generate()
+    cama = Decoracion("Proyecto FInal\Texturas\Cama.obj")
+    cama.generate()
+    closet = Decoracion("Proyecto FInal\Texturas\Closet.obj")
+    closet.generate()
+    cocinaLavabo = Decoracion("Proyecto FInal\Texturas\CocinaLavabo.obj")
+    cocinaLavabo.generate()
+    foco = Decoracion("Proyecto FInal\\Texturas\\foco.obj")
+    foco.generate()
+    mesaySillas = Decoracion("Proyecto FInal\Texturas\MesaySillas.obj")
+    mesaySillas.generate()
+    muebleIndividual = Decoracion("Proyecto FInal\Texturas\MuebleIndividual.obj")
+    muebleIndividual.generate()
+    muebleMediano = Decoracion("Proyecto FInal\Texturas\MuebleMediano.obj")
+    muebleMediano.generate()
+    muebleMedianoParaTele = Decoracion("Proyecto FInal\Texturas\MuebleMedianoParaTele.obj")
+    muebleMedianoParaTele.generate()
+    muebleParaTele = Decoracion("Proyecto FInal\Texturas\MuebleParaTele.obj")
+    muebleParaTele.generate()
+    sillonGrande = Decoracion("Proyecto FInal\Texturas\SillonGrande.obj")
+    sillonGrande.generate()
+    sillonIndividual = Decoracion("Proyecto FInal\Texturas\SillonIndividual.obj")
+    sillonIndividual.generate()
+    #Asigamos las texturas a cada persona
     for i in range(npersonas):
         obj_file = obj_files[i % len(obj_files)]
         persona = Persona(20, 1.0, obj_file)
@@ -250,7 +286,6 @@ def drawFondo():
     glPopMatrix()
 
         
-
     
 def display():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -286,6 +321,37 @@ def display():
     suelo2.draw()
     glPopMatrix()
     
+    #se dibujan las lamparas
+    glPushMatrix()
+    glScale(8,8,8)
+    glTranslate(6.3, 0.1, 3.8)
+    glRotate(-90, 1, 0, 0)
+    lampara.draw()
+    glPopMatrix()
+    
+    #lampara 2
+    glPushMatrix()
+    glScale(8,8,8)
+    glTranslate(5.8, 0.1, -7)
+    glRotate(-90, 1, 0, 0)
+    lampara.draw()
+    glPopMatrix()
+    
+    #lampara 3
+    glPushMatrix()
+    glScale(8,8,8)
+    glTranslate(-5, 0.1, -8)
+    glRotate(-90, 1, 0, 0)
+    lampara.draw()
+    glPopMatrix()
+    
+    #lampara 4
+    glPushMatrix()
+    glScale(8,8,8)
+    glTranslate(-3.5, 0.1, 6)
+    glRotate(-90, 1, 0, 0)
+    lampara.draw()
+    glPopMatrix()
     
     #se dibujan la casa verde
     glPushMatrix()
@@ -312,23 +378,23 @@ def display():
     #obj.render()
     glPopMatrix()
     
-    # #se dibujan la casa verde2
-    # glPushMatrix()
-    # #glScalef(3.5, 3.5, 3.5)
-    # #glTranslate(30, 0, 10)
-    # glScale(7,7,7)
-    # glTranslate(0, 0, 30)
-    # glRotate(-90, 0, 1, 0)
-    # glRotate(-90, 1, 0, 0 )
-    # glRotate(-90, 0, 0, 1)
-    # casa.draw()
-    # #obj.render()
-    # glPopMatrix()
+    #se dibujan la casa verde2
+    glPushMatrix()
+    #glScalef(3.5, 3.5, 3.5)
+    #glTranslate(30, 0, 10)
+    glScale(7,7,7)
+    glTranslate(0, 0, 30)
+    glRotate(-90, 0, 1, 0)
+    glRotate(-90, 1, 0, 0 )
+    glRotate(-90, 0, 0, 1)
+    casa.draw()
+    #obj.render()
+    glPopMatrix()
     
     
     #Dibuja las personas
     glPushMatrix()
-    #glScale(0.8,0.8,0.8)
+    glScale(0.3,0.3,0.3)
     #glTranslate(120.0, 0.0, 0.0)
     glTranslate(0.0, -3.5, 0.0)
     glTranslate(-4, 0, 0)
@@ -410,6 +476,190 @@ def display():
     vallaM1.draw()
     glPopMatrix()
     
+    # se dibuja la decoracion de la casa
+    glPushMatrix()
+    glScale(6,6,6)
+    glTranslate(25.8,0.1,10.5)
+    glRotate(-15, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    alfombra.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glTranslate(174.5,5.08,58.5)
+    glScale(0.3,0.3,0.3)
+    glRotate(100, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    amongus.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glTranslate(174.2, 3.8, 61)
+    glScale(0.3,0.3,0.3)
+    glRotate(15, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    amongus.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glTranslate(174.2, 2.7, 58.5)
+    glScale(0.3,0.3,0.3)
+    glRotate(45, 0, 1, 0)
+    glRotate(90, 0, 0, 1)
+    amongus.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(4,4,4)
+    glTranslate(27,0.1,0.5)
+    glRotate(160, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    cama.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(4,4,4)
+    glTranslate(29,0.1,0.01)
+    glRotate(-107, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    closet.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(5,5,5)
+    glTranslate(19.5,0.1,9.1)
+    glRotate(-20, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    cocinaLavabo.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(5,5,5)
+    glTranslate(21,0.1,9)
+    glRotate(75, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    mesaySillas.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glTranslate(135,20,30)
+    glScale(0.8,0.8,0.8)
+    glRotate(90, 1, 0, 0)
+    foco.draw()
+    glPopMatrix()
+    
+    
+    #listo
+    glPushMatrix()
+    glScale(3,3,3)
+    glTranslate(55,0.1,17.8)
+    glRotate(-90, 1, 0, 0)
+    muebleIndividual.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(3,3,3)
+    glTranslate(49.8,0.1,16.5)
+    glRotate(-90, 1, 0, 0)
+    muebleIndividual.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(3,3,3)
+    glTranslate(49,0.1,19)
+    glRotate(-90, 1, 0, 0)
+    muebleIndividual.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(3,3,3)
+    glTranslate(48.6,0.1,20.5)
+    glRotate(-90, 1, 0, 0)
+    muebleIndividual.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(3,3,3)
+    glTranslate(48.1,0.1,22)
+    glRotate(-90, 1, 0, 0)
+    muebleIndividual.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(2,2,2)
+    glTranslate(87.2,0.5,30)
+    glRotate(-107, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    muebleMediano.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(2,2,2)
+    glTranslate(87.2, 1.8, 30)
+    glRotate(-107, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    muebleMediano.draw()
+    glPopMatrix()
+    
+    
+    #listo
+    glPushMatrix()
+    glTranslate(154,0.5,63)
+    glScale(0.2,0.2,0.2)
+    glRotate(75, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    muebleMedianoParaTele.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(6,6,6)
+    glTranslate(28.5,0.1,11.2)
+    glRotate(75, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    muebleParaTele.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(4,4,4)
+    glTranslate(35,0,14.8)
+    glRotate(-105, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    sillonGrande.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(4,4,4)
+    glTranslate(40,0,13)
+    glRotate(166, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    sillonIndividual.draw()
+    glPopMatrix()
+    
+    #listo
+    glPushMatrix()
+    glScale(4,4,4)
+    glTranslate(38.5,0,12.6)
+    glRotate(166, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    sillonIndividual.draw()
+    glPopMatrix()
     
     pygame.display.flip()
     #pygame.time.wait(100)
@@ -485,25 +735,46 @@ while not done:
             glLoadIdentity()
             gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
         #se controla el movimieto de camara a la derecha
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            dir[0] = (math.cos(math.radians(-theta)) * dir[0]) + (math.sin(math.radians(-theta)) * dir[2])
-            dir[2] = -(math.sin(math.radians(-theta)) * dir[0]) + (math.cos(math.radians(-theta)) * dir[2])
-            #EYE_X = EYE_X + dir[0]
-            #EYE_Z = EYE_Z + dir[2]
-            CENTER_X = EYE_X + dir[0]
-            CENTER_Z = EYE_Z + dir[2]
+        # if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        #     dir[0] = (math.cos(math.radians(-theta)) * dir[0]) + (math.sin(math.radians(-theta)) * dir[2])
+        #     dir[2] = -(math.sin(math.radians(-theta)) * dir[0]) + (math.cos(math.radians(-theta)) * dir[2])
+        #     #EYE_X = EYE_X + dir[0]
+        #     #EYE_Z = EYE_Z + dir[2]
+        #     CENTER_X = EYE_X + dir[0]
+        #     CENTER_Z = EYE_Z + dir[2]
+        #     glLoadIdentity()
+        #     gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
+        # if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        #     dir[0] = (math.cos(math.radians(theta)) * dir[0]) + (math.sin(math.radians(theta)) * dir[2])
+        #     dir[2] = -(math.sin(math.radians(theta)) * dir[0]) + (math.cos(math.radians(theta)) * dir[2])
+        #     #EYE_X = EYE_X - dir[0]
+        #     #EYE_Z = EYE_Z - dir[2]
+        #     CENTER_X = EYE_X + dir[0]
+        #     CENTER_Z = EYE_Z + dir[2]
+        #     glLoadIdentity()
+        #     gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
+        
+        if keys[K_RIGHT] or keys[K_d]:
+            # Movimiento hacia la derecha
+            right = [-dir[2], 0, dir[0]]
+            EYE_X += right[0]
+            EYE_Z += right[2]
+            CENTER_X += right[0]
+            CENTER_Z += right[2]
             glLoadIdentity()
             gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
         #se controla el movimieto de camara a la izquierda
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            dir[0] = (math.cos(math.radians(theta)) * dir[0]) + (math.sin(math.radians(theta)) * dir[2])
-            dir[2] = -(math.sin(math.radians(theta)) * dir[0]) + (math.cos(math.radians(theta)) * dir[2])
-            #EYE_X = EYE_X - dir[0]
-            #EYE_Z = EYE_Z - dir[2]
-            CENTER_X = EYE_X + dir[0]
-            CENTER_Z = EYE_Z + dir[2]
+        
+        if keys[K_LEFT] or keys[K_a]:
+            # Movimiento hacia la izquierda
+            left = [dir[2], 0, -dir[0]]
+            EYE_X += left[0]
+            EYE_Z += left[2]
+            CENTER_X += left[0]
+            CENTER_Z += left[2]
             glLoadIdentity()
             gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
+
         if keys[K_ESCAPE]:
             done = True
         # if event.key == pygame.K_ESCAPE:
