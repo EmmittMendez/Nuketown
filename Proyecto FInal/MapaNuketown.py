@@ -72,8 +72,8 @@ CENTER_Z = 0.0    #0
 # EYE_Y = 90.0
 # EYE_Z = 300.0
 # CENTER_X = 0
-# CENTER_Y = 0
-# CENTER_Z = 0c:\Users\edgar\Desktop\Otoño 2023\Graficación\Archivos obj\Texturas Nuketown\Objetos Corregidos\Mas texturas\MapaNuketown2.py
+# CENTER_Y = 90
+# CENTER_Z = 0
 '''
 #pruebas dentro del cubo casa amarilla
 EYE_X = 1.0
@@ -305,6 +305,8 @@ def display():
     Axis()
     #Se dibuja el plano verde
     glColor3f(0.3, 1.0, 0.3)
+    #gris
+    #glColor3f(0.3, 0.3, 0.3)
     glBegin(GL_QUADS)
     glVertex3d(-DimBoard, 0, -DimBoard)
     glVertex3d(-DimBoard, 0, DimBoard)
@@ -782,8 +784,8 @@ while not done:
             done = True
         
         keys = pygame.key.get_pressed()
-        #if event.type == pygame.KEYDOWN:
-            #se controla el movimiento para adelante
+        
+        #se controla el movimiento para adelante
         if keys[K_UP] or keys[K_w]:
             EYE_X = EYE_X + dir[0]
             EYE_Z = EYE_Z + dir[2]
@@ -799,25 +801,6 @@ while not done:
             CENTER_Z = CENTER_Z + dir[2]
             glLoadIdentity()
             gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
-        #se controla el movimieto de camara a la derecha
-        # if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-        #     dir[0] = (math.cos(math.radians(-theta)) * dir[0]) + (math.sin(math.radians(-theta)) * dir[2])
-        #     dir[2] = -(math.sin(math.radians(-theta)) * dir[0]) + (math.cos(math.radians(-theta)) * dir[2])
-        #     #EYE_X = EYE_X + dir[0]
-        #     #EYE_Z = EYE_Z + dir[2]
-        #     CENTER_X = EYE_X + dir[0]
-        #     CENTER_Z = EYE_Z + dir[2]
-        #     glLoadIdentity()
-        #     gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
-        # if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-        #     dir[0] = (math.cos(math.radians(theta)) * dir[0]) + (math.sin(math.radians(theta)) * dir[2])
-        #     dir[2] = -(math.sin(math.radians(theta)) * dir[0]) + (math.cos(math.radians(theta)) * dir[2])
-        #     #EYE_X = EYE_X - dir[0]
-        #     #EYE_Z = EYE_Z - dir[2]
-        #     CENTER_X = EYE_X + dir[0]
-        #     CENTER_Z = EYE_Z + dir[2]
-        #     glLoadIdentity()
-        #     gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
         
         if keys[K_RIGHT] or keys[K_d]:
             # Movimiento hacia la derecha
@@ -842,10 +825,6 @@ while not done:
 
         if keys[K_ESCAPE]:
             done = True
-        # if event.key == pygame.K_ESCAPE:
-        #    done = True
-            # glLoadIdentity()
-            # gluLookAt(EYE_X, EYE_Y, EYE_Z, CENTER_X, CENTER_Y, CENTER_Z, UP_X, UP_Y, UP_Z)
     # Generar las parejas de obj
     parejas_persona = Persona.parejasPersonas(personas)
 
