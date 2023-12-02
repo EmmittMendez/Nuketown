@@ -117,6 +117,7 @@ class OBJ:
         glEndList()
 
     def render(self):
+        glDisable(GL_TEXTURE_2D)
         glCallList(self.gl_list)
 
     def free(self):

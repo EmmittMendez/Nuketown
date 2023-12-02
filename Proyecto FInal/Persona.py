@@ -61,8 +61,8 @@ class Persona:
     def colisionDetection(parejas):
         for persona1, persona2 in parejas:
             # Nuestros cubos son de tamaño 5, por lo que nuestros radios serian de 2.5
-            radio_persona1 = 1  
-            radio_persona2 = 1
+            radio_persona1 = 5  
+            radio_persona2 = 5
 
             # Calcular la posición futura de los cubos
             posicion_futura_persona1 = [persona1.Position[0] + persona1.Direction[0], persona1.Position[2] + persona1.Direction[2]]

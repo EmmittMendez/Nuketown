@@ -19,4 +19,5 @@ class Casa:
         self.obj.generate()
 
     def draw(self):
+        glDisable(GL_TEXTURE_2D)
         self.obj.render()

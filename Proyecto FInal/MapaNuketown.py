@@ -26,13 +26,14 @@ from Letrero import Letrero
 from Valla import Valla
 from Decoracion import Decoracion
 from Lampara import Lampara
+from Fondo import Fondo
 
 screen_width = 900
 screen_height = 600
 #vc para el obser.
 FOVY=60.0
 ZNEAR=0.01
-ZFAR=900.0
+ZFAR=1000.0
 # ZFAR=1000.0
 #Variables para definir la posicion del observador
 #gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z)
@@ -150,6 +151,7 @@ def Init():
     global casa, casa2, bus, carro, suelo, suelo2, letrero, vallaC, vallaL1, vallaL2, vallaL3, vallaM1, vallaM2
     global alfombra, amongus, cama, closet, cocinaLavabo, foco, mesaySillas, muebleIndividual, muebleMediano
     global lampara, muebleMedianoParaTele, muebleParaTele, sillonGrande, sillonIndividual
+    global fondo, fondo2, fondo3, fondo4, fondo5
     #screen = pygame.display.set_mode(
         #(screen_width, screen_height), DOUBLEBUF | OPENGL)
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.OPENGL)
@@ -181,6 +183,9 @@ def Init():
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)           # most obj files expect to be smooth-shaded
     
+    
+    # fondo = Fondo("Proyecto FInal\Fondo\FondoDesierto.obj")
+    # fondo.generate()
     
     # Texturas para el suelo
     suelo = Suelo("Proyecto FInal\Texturas\BaseSuelo.obj")
@@ -246,49 +251,57 @@ def Init():
     sillonGrande.generate()
     sillonIndividual = Decoracion("Proyecto FInal\Texturas\SillonIndividual.obj")
     sillonIndividual.generate()
+    
+    # Texturas para el fondo
+    fondo = Fondo(["Proyecto FInal\Fondo\FondoDesierto.bmp"])
+    fondo2 = Fondo(["Proyecto FInal\Fondo\FondoDesierto.bmp"])
+    fondo3 = Fondo(["Proyecto FInal\Fondo\FondoDesierto.bmp"])
+    fondo4 = Fondo(["Proyecto FInal\Fondo\FondoDesierto.bmp"])
+    fondo5 = Fondo(["Proyecto FInal\\Fondo\\NubesDesenfocadas2.bmp"])
     #Asigamos las texturas a cada persona
     for i in range(npersonas):
         obj_file = obj_files[i % len(obj_files)]
-        persona = Persona(20, 1.0, obj_file)
+        persona = Persona(60, 1.0, obj_file)
         personas.append(persona)
         
 
-#dibujamos el fondo  
-def drawFondo():
+# #dibujamos el fondo  
+# def drawFondo():
     
-    vertex_coords = [
-        1, 1, 1,  1, 1, -1,  1, -1, -1,  1, -1, 1,
-        -1, 1, 1,  -1, 1, -1,  -1, -1, -1,  -1, -1, 1
-    ]
-    vertex_colors = [ 
-        1, 1, 1,  1, 0, 0,  1, 1, 0,  0, 1, 0,
-        0, 0, 1,  1, 0, 1,  0, 0, 0,  0, 1, 1
-    ]
-    element_array = [ 
-        0, 1, 2, 3,  0, 3, 7, 4,  0, 4, 5, 1,
-        6, 2, 1, 5,  6, 5, 4, 7,  6, 7, 3, 2
-    ]
+#     vertex_coords = [
+#         1, 1, 1,  1, 1, -1,  1, -1, -1,  1, -1, 1,
+#         -1, 1, 1,  -1, 1, -1,  -1, -1, -1,  -1, -1, 1
+#     ]
+#     vertex_colors = [ 
+#         1, 1, 1,  1, 0, 0,  1, 1, 0,  0, 1, 0,
+#         0, 0, 1,  1, 0, 1,  0, 0, 0,  0, 1, 1
+#     ]
+#     element_array = [ 
+#         0, 1, 2, 3,  0, 3, 7, 4,  0, 4, 5, 1,
+#         6, 2, 1, 5,  6, 5, 4, 7,  6, 7, 3, 2
+#     ]
     
-    #dibujamos el cubo
-    glPushMatrix()
-    glScalef(400.0, 50.0, 400.0)  
+#     #dibujamos el cubo
+#     glPushMatrix()
+#     glScalef(400.0, 50.0, 400.0)  
     
-    # Trasladar el cubo
-    glTranslatef(0.0, 0.9, 0.0)
+#     # Trasladar el cubo
+#     glTranslatef(0.0, 0.9, 0.0)
 
-    glEnableClientState(GL_VERTEX_ARRAY)
-    glEnableClientState(GL_COLOR_ARRAY)
-    glVertexPointer(3, GL_FLOAT, 0, vertex_coords)
-    glColorPointer(3, GL_FLOAT, 0, vertex_colors)
-    glDrawElements(GL_QUADS, 24, GL_UNSIGNED_INT, element_array)
-    glDisableClientState(GL_VERTEX_ARRAY)
-    glDisableClientState(GL_COLOR_ARRAY)
-    glPopMatrix()
+#     glEnableClientState(GL_VERTEX_ARRAY)
+#     glEnableClientState(GL_COLOR_ARRAY)
+#     glVertexPointer(3, GL_FLOAT, 0, vertex_coords)
+#     glColorPointer(3, GL_FLOAT, 0, vertex_colors)
+#     glDrawElements(GL_QUADS, 24, GL_UNSIGNED_INT, element_array)
+#     glDisableClientState(GL_VERTEX_ARRAY)
+#     glDisableClientState(GL_COLOR_ARRAY)
+#     glPopMatrix()
 
         
     
 def display():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    #glEnable(GL_LIGHTING)
     Axis()
     #Se dibuja el plano verde
     glColor3f(0.3, 1.0, 0.3)
@@ -299,18 +312,24 @@ def display():
     glVertex3d(DimBoard, 0, -DimBoard)
     glEnd()
     #se dibuja el fondo
-    drawFondo()
+    #drawFondo()
+    
+    #glColor3f(1.0, 1.0, 1.0) 
+    
     
     #se dibuja el suelo
+    glBindTexture(GL_TEXTURE_2D, 0) 
     glPushMatrix()
     glScale(8,8,8)
     glTranslate(1.5, 0, 0)
     glRotate(69, 0, 1, 0)
     glRotate(90, 1, 0, 0)
+  
     suelo.draw()
     glPopMatrix()
     
     #se dibuja el suelo2
+   
     glPushMatrix()
     glScale(8,8,8)
     glTranslate(0, 0.08, 0)
@@ -318,22 +337,27 @@ def display():
     glRotate(105, 0, 1, 0)
     glRotate(-90, 1, 0, 0)
     #glRotate(90, 1, 0, 0) #cambio para ver orientacion del suelo
+   
     suelo2.draw()
     glPopMatrix()
     
     #se dibujan las lamparas
+    
     glPushMatrix()
     glScale(8,8,8)
     glTranslate(6.3, 0.1, 3.8)
     glRotate(-90, 1, 0, 0)
+    
     lampara.draw()
     glPopMatrix()
     
     #lampara 2
+   
     glPushMatrix()
     glScale(8,8,8)
     glTranslate(5.8, 0.1, -7)
     glRotate(-90, 1, 0, 0)
+   
     lampara.draw()
     glPopMatrix()
     
@@ -354,7 +378,9 @@ def display():
     glPopMatrix()
     
     #se dibujan la casa verde
+    
     glPushMatrix()
+    
     #glScalef(3.5, 3.5, 3.5)
     #glTranslate(30, 0, 10)
     glScale(7,7,7)
@@ -367,6 +393,7 @@ def display():
     glPopMatrix()
     
     #se dibuja la casa amarilla
+    
     glPushMatrix()
     glScale(7,7,8)
     glTranslate(-18, 0, 3.5)
@@ -374,11 +401,13 @@ def display():
     #glTranslate(-30, 0, -10)
     glRotate(-90, 1, 0, 0)
     glRotate(-90, 0, 0, 1)
+   
     casa2.draw()
     #obj.render()
     glPopMatrix()
     
     #se dibujan la casa verde2
+    
     glPushMatrix()
     #glScalef(3.5, 3.5, 3.5)
     #glTranslate(30, 0, 10)
@@ -387,6 +416,7 @@ def display():
     glRotate(-90, 0, 1, 0)
     glRotate(-90, 1, 0, 0 )
     glRotate(-90, 0, 0, 1)
+   
     casa.draw()
     #obj.render()
     glPopMatrix()
@@ -396,8 +426,8 @@ def display():
     glPushMatrix()
     glScale(0.3,0.3,0.3)
     #glTranslate(120.0, 0.0, 0.0)
-    glTranslate(0.0, -3.5, 0.0)
-    glTranslate(-4, 0, 0)
+    #glTranslate(0, -3, 0)
+    glTranslate(-6, -3, 25)
     #glRotate(-90, 1, 0, 0)
     for obj in personas:
         obj.draw()
@@ -660,6 +690,41 @@ def display():
     glRotate(-90, 1, 0, 0)
     sillonIndividual.draw()
     glPopMatrix()
+    
+    glColor3f(1.0, 1.0, 1.0) 
+    
+    fondo.drawFondo()
+    
+    glPushMatrix()
+    glTranslate(0, 0, -800)
+    fondo2.drawFondo()
+    glPopMatrix()
+    
+    glPushMatrix()
+    glRotate(90, 0, 1, 0)
+    fondo3.drawFondo()
+    glPopMatrix()
+    
+    glPushMatrix()
+    glRotate(-90, 0, 1, 0)
+    fondo4.drawFondo()
+    glPopMatrix()
+    
+    glPushMatrix()
+    glScale(1.5, 1.5, 1.5)
+    glTranslate(0, 100, 300)
+    glRotate(-90, 1, 0, 0)
+    fondo5.drawFondo()
+    glPopMatrix()
+    
+    
+    # glPushMatrix()
+    # glScale(90,90,90)
+    # glTranslate(0, 2, -5)
+    # glRotate(-90, 0, 1, 0)
+    # fondo.draw()
+    # glDisable(GL_TEXTURE_2D)
+    # glPopMatrix()
     
     pygame.display.flip()
     #pygame.time.wait(100)
